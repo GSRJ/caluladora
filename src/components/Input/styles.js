@@ -5,12 +5,10 @@ export const InputContainer = styled.div`
     font-family: Calculator;
     src: url("./fonts/Calculator.ttf");
   }
+
   width: 100%;
   height: 75px;
   background-color: #aaffaa;
-  display: flex;
-  align-items: center;
-
   display: flex;
   align-items: center;
   justify-content: flex-end;

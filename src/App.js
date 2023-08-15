@@ -5,7 +5,8 @@ import { Container, Content, Row } from "./styles";
 
 function App() {
   const [currentNumber, setCurrentNumber] = useState("0");
-  const [firstNumber, setFirstNumber] = useState();
+  const [firstNumber, setFirstNumber] = useState("0");
+  const [operation, setOperation] = useState("");
 
   const handleAddNumber = (number) => {
     setCurrentNumber((prev) =>
@@ -13,36 +14,40 @@ function App() {
     );
   };
 
-  const handleClear = () => {
-    setCurrentNumber("0");
-    setFirstNumber("0");
+  const handleOnClear = () => {
+    window.location.reload();
   };
 
-  const handleSum = () => {
-    if (firstNumber === "0" || firstNumber === undefined) {
+  const handleSumNumbers = () => {
+    if (firstNumber === "0") {
       setFirstNumber(currentNumber);
+      setCurrentNumber("0");
     } else {
       const sum = Number(firstNumber) + Number(currentNumber);
-      console.log(firstNumber);
       setCurrentNumber(String(sum));
-      // TODO Parei na função soma e igual https://web.dio.me/lab/calculadora/learning/0197b510-9190-4598-8833-f6eb6f8c329b
     }
   };
 
   return (
-    <Container className="App">
+    <Container>
       <Content>
         <Input value={currentNumber} />
         <Row>
-          <Button label={"*"} />
-          <Button label={"/"} />
           <Button
-            label={"C"}
-            onClick={() => handleClear()}
+            label={"*"}
+            onClick={() => {}}
           />
           <Button
-            label={"0"}
-            onClick={() => handleAddNumber("0")}
+            label={"/"}
+            onClick={() => {}}
+          />
+          <Button
+            label={"C"}
+            onClick={handleOnClear}
+          />
+          <Button
+            label={"Del"}
+            onClick={() => {}}
           />
         </Row>
         <Row>
@@ -78,7 +83,7 @@ function App() {
           />
           <Button
             label={"+"}
-            onClick={() => handleSum()}
+            onClick={handleSumNumbers}
           />
         </Row>
         <Row>
@@ -96,7 +101,7 @@ function App() {
           />
           <Button
             label={"="}
-            onClick={() => handleAddNumber("")}
+            onClick={() => {}}
           />
         </Row>
       </Content>
