@@ -22,9 +22,23 @@ function App() {
     if (firstNumber === "0") {
       setFirstNumber(currentNumber);
       setCurrentNumber("0");
+      setOperation("+");
     } else {
       const sum = Number(firstNumber) + Number(currentNumber);
       setCurrentNumber(String(sum));
+      setOperation("+");
+    }
+  };
+
+  const handleEquals = () => {
+    if (firstNumber !== "0" && operation !== "" && currentNumber !== "0") {
+      switch (operation) {
+        case "+":
+          handleSumNumbers();
+          break;
+        default:
+          break;
+      }
     }
   };
 
@@ -101,7 +115,7 @@ function App() {
           />
           <Button
             label={"="}
-            onClick={() => {}}
+            onClick={handleEquals}
           />
         </Row>
       </Content>
