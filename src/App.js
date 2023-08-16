@@ -36,9 +36,23 @@ function App() {
         case "+":
           handleSumNumbers();
           break;
+        case "-":
+          handleRemNumbers();
         default:
           break;
       }
+    }
+  };
+
+  const handleRemNumbers = () => {
+    if (firstNumber === "0") {
+      setFirstNumber(currentNumber);
+      setCurrentNumber("0");
+      setOperation("-");
+    } else {
+      const sum = Number(firstNumber) - Number(currentNumber);
+      setCurrentNumber(String(sum));
+      setOperation("-");
     }
   };
 
@@ -79,7 +93,7 @@ function App() {
           />
           <Button
             label={"-"}
-            onClick={() => handleAddNumber("")}
+            onClick={handleRemNumbers}
           />
         </Row>
         <Row>
