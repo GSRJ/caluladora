@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./components/Button";
 import { Input } from "./components/Input";
 import { Container, Content, Row } from "./styles";
 
 function App() {
   const [currentNumber, setCurrentNumber] = useState("0");
-  const [firstNumber, setFirstNumber] = useState("0");
+  const [firstNumber, setFirstNumber] = useState(null);
   const [operation, setOperation] = useState("");
+  const [visor, setVisor] = useState("0");
 
   const handleAddNumber = (number) => {
     setCurrentNumber((prev) =>
@@ -14,60 +15,105 @@ function App() {
     );
   };
 
+  useEffect(() => {
+    setVisor(currentNumber);
+  }, [currentNumber]);
+
   const handleOnClear = () => {
-    window.location.reload();
+    setCurrentNumber("0");
+    setVisor("0");
+    setFirstNumber(null);
+    setOperation("");
   };
 
   const handleSumNumbers = () => {
-    if (firstNumber === "0") {
-      setFirstNumber(currentNumber);
-      setCurrentNumber("0");
-      setOperation("+");
+    let result;
+    if (firstNumber === null) {
+      result = Number(currentNumber);
     } else {
-      const sum = Number(firstNumber) + Number(currentNumber);
-      setCurrentNumber(String(sum));
-      setOperation("+");
+      result = firstNumber + Number(currentNumber);
     }
+    setFirstNumber(result);
+    setCurrentNumber("0");
+    setVisor(result.toString());
+    setOperation("+");
+  };
+
+  const handleSubtractNumbers = () => {
+    let result;
+    if (firstNumber === null) {
+      result = Number(currentNumber);
+    } else {
+      result = firstNumber - Number(currentNumber);
+    }
+    setFirstNumber(result);
+    setCurrentNumber("0");
+    setVisor(result.toString());
+    setOperation("-");
+  };
+
+  const handleMultiplyNumbers = () => {
+    let result;
+    if (firstNumber === null) {
+      result = Number(currentNumber);
+    } else {
+      result = firstNumber * Number(currentNumber);
+    }
+    setFirstNumber(result);
+    setCurrentNumber("0");
+    setVisor(result.toString());
+    setOperation("*");
+  };
+
+  const handleDivideNumbers = () => {
+    let result;
+    if (firstNumber === null) {
+      result = Number(currentNumber);
+    } else {
+      result = firstNumber / Number(currentNumber);
+    }
+    setFirstNumber(result);
+    setCurrentNumber("0");
+    setVisor(result.toString());
+    setOperation("/");
+  };
+
+  const handleDeleteLastNumber = () => {
+    setCurrentNumber(currentNumber.slice(0, -1));
   };
 
   const handleEquals = () => {
-    if (firstNumber !== "0" && operation !== "" && currentNumber !== "0") {
-      switch (operation) {
-        case "+":
-          handleSumNumbers();
-          break;
-        case "-":
-          handleRemNumbers();
-        default:
-          break;
-      }
+    let result;
+    if (currentNumber !== "0" && operation === "+") {
+      result = firstNumber + Number(currentNumber);
+    } else if (currentNumber !== "0" && operation === "-") {
+      result = firstNumber - Number(currentNumber);
+    } else if (currentNumber !== "0" && operation === "*") {
+      result = firstNumber * Number(currentNumber);
+    } else if (currentNumber !== "0" && operation === "/") {
+      result = firstNumber / Number(currentNumber);
+    } else {
+      result = Number(currentNumber);
     }
+    setCurrentNumber(result.toString());
+    setFirstNumber(result);
+    setOperation("");
   };
 
-  const handleRemNumbers = () => {
-    if (firstNumber === "0") {
-      setFirstNumber(currentNumber);
-      setCurrentNumber("0");
-      setOperation("-");
-    } else {
-      const sum = Number(firstNumber) - Number(currentNumber);
-      setCurrentNumber(String(sum));
-      setOperation("-");
-    }
-  };
+  useEffect(() => {}, [currentNumber]);
 
   return (
     <Container>
       <Content>
-        <Input value={currentNumber} />
+        <Input value={visor} />
         <Row>
           <Button
             label={"*"}
-            onClick={() => {}}
+            onClick={handleMultiplyNumbers}
           />
           <Button
             label={"/"}
-            onClick={() => {}}
+            onClick={handleDivideNumbers}
           />
           <Button
             label={"C"}
@@ -75,7 +121,7 @@ function App() {
           />
           <Button
             label={"Del"}
-            onClick={() => {}}
+            onClick={handleDeleteLastNumber}
           />
         </Row>
         <Row>
@@ -93,7 +139,7 @@ function App() {
           />
           <Button
             label={"-"}
-            onClick={handleRemNumbers}
+            onClick={handleSubtractNumbers}
           />
         </Row>
         <Row>
